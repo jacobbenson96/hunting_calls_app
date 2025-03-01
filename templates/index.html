@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hunting Calls</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .call-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .stop-btn {
+            background-color: #dc3545;
+        }
+        .stop-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Turkey Hunting Calls</h1>
+    <div id="calls"></div>
+
+    <script>
+        let currentAudio = null;
+
+        async function loadCalls() {
+            const response = await fetch("/api/calls");
+            const calls = await response.json();
+            const callsDiv = document.getElementById("calls");
+
+            calls.forEach(call => {
+                const div = document.createElement("div");
+                div.className = "call-container";
+                div.innerHTML = `
+                    <h2>${call.name}</h2>
+                    <p>${call.description}</p>
+                    <button onclick="playSound('${call.audio}')">Play</button>
+                    <button class="stop-btn" onclick="stopSound()">Stop</button>
+                `;
+                callsDiv.appendChild(div);
+            });
+        }
+
+        function playSound(filename) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            currentAudio = new Audio(`/sounds/${filename}`);
+            currentAudio.play();
+        }
+
+        function stopSound() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                currentAudio = null;
+            }
+        }
+
+        loadCalls();
+    </script>
+</body>
+</html>
