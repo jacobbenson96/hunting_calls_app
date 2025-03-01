@@ -5,7 +5,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Welcome to the Hunting Calls API! Visit /api/calls to see available turkey calls."
+    return redirect("/calls")
+    
 
 @app.route("/calls")
 def calls_page():
