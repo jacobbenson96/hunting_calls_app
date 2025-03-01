@@ -1,18 +1,18 @@
-import os
-from flask import Flask, jsonify, send_from_directory, render_template, redirect 
+from flask import Flask, jsonify, send_from_directory, render_template, redirect
 
 app = Flask(__name__)
 
+# Serve the home page where users select a game
 @app.route("/")
 def home():
-    return redirect("/calls")
-    
-
-@app.route("/calls")
-def calls_page():
     return render_template("index.html")
 
+# Serve the turkey calls page
+@app.route("/calls")
+def calls_page():
+    return render_template("turkey_calls.html")  # Ensure this file exists
 
+# API Route to Get Calls
 turkey_calls = [
     {"name": "Cluck and Purr", "description": "A mix of clucks and purrs for soft turkey communication.", "audio": "Cluck_and_Purr.mp3"},
     {"name": "Clucks", "description": "Short, soft notes to reassure turkeys.", "audio": "Clucks.mp3"},
@@ -32,11 +32,10 @@ turkey_calls = [
 def get_calls():
     return jsonify(turkey_calls)
 
-# ✅ Route to Serve Audio Files (Do Not Remove This)
+# ✅ Route to Serve Audio Files
 @app.route("/sounds/<path:filename>")
 def get_sound(filename):
-    sounds_dir = os.path.join(app.root_path, "sounds")
-    return send_from_directory(sounds_dir, filename)
+    return send_from_directory("sounds", filename)
 
 if __name__ == "__main__":
     app.run(debug=True)
