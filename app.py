@@ -10,7 +10,7 @@ def home():
 # Serve the turkey calls page
 @app.route("/calls")
 def calls_page():
-    return render_template("turkey_calls.html")  # Ensure this file exists
+    return render_template("turkey_calls.html", turkey_calls=turkey_calls) 
 
 # API Route to Get Calls
 turkey_calls = [
@@ -32,10 +32,14 @@ turkey_calls = [
 def get_calls():
     return jsonify(turkey_calls)
 
-# ✅ Route to Serve Audio Files
+# Route to Serve Audio Files
 @app.route("/sounds/<path:filename>")
 def get_sound(filename):
     return send_from_directory("sounds", filename)
+# Serve the Service Worker for Offline Mode
+@app.route("/static/service-worker.js")
+def service_worker():
+    return send_from_directory('static', 'service-worker.js', mimetype='application/javascript')
 
 if __name__ == "__main__":
     app.run(debug=True)

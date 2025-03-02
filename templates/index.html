@@ -38,7 +38,6 @@
             height: 150px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
-            filter: blur(2px);
         }
         .game-option p {
             position: absolute;
@@ -81,6 +80,12 @@
                 alert(game + ' calls will be added soon!');
             }
         }
+        if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/static/service-worker.js')
+        .then(() => console.log('Service Worker Registered'))
+        .catch(error => console.log('Service Worker Registration Failed', error));
+}
+
     </script>
 </body>
 </html>
